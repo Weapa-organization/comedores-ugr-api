@@ -29,8 +29,25 @@ class MenuModel(BaseModel):
         json_encoders = {ObjectId: str}
         schema_extra = {
             "example": {
-                "entrante": "Jane Doe",
-                "email": "jdoe@example.com"
+                "entrante": {
+                    "name": "Macarrones",
+                    "alergenos": [
+                        "Gluten"
+                    ]
+                },
+                "principal": {
+                    "name": "Pollo",
+                    "alergenos": [
+                        "Lacteos"
+                    ]
+                },
+                "postre": {
+                    "name": "Tarta de queso",
+                    "alergenos": [
+                        "Gluten"
+                    ]
+                },
+                "date": "2022-09-18"
             }
         }
 
