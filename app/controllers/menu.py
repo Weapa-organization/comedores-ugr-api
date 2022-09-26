@@ -22,10 +22,10 @@ async def show_menu(id: str):
     if (menu := await db["menus"].find_one({"_id": id})) is not None:
         return menu
 
-    raise HTTPException(status_code=404, detail=f"Student {id} not found")
+    raise HTTPException(status_code=404, detail=f"Menu {id} not found")
 
 @router.get(
-    "/{date}", response_description="List of menus by date", response_model=List[MenuModel]
+    "/date/{date}", response_description="List of menus by date", response_model=List[MenuModel]
 )
 async def list_menu_by_date(date: str):
     menus = await db["menus"].find({"date": date}).to_list(1000)
