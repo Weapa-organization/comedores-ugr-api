@@ -24,15 +24,13 @@ class FoodStructure:
 class MenuModel:
     starter: FoodStructure
     main: FoodStructure
-    second: FoodStructure
     extra: FoodStructure
     dessert: FoodStructure
     date: str
 
-    def __init__(self, starter, main, second, extra, dessert, date):
+    def __init__(self, starter, main, extra, dessert, date):
         self.starter = starter
         self.main = main
-        self.second = second
         self.extra = extra
         self.dessert = dessert
         self.date = date
@@ -95,16 +93,15 @@ for index, food in enumerate(foods):
             date = calculate_date(foods[index-1])
         starter = parse_menu(foods[index+1], allergies[index+1], 'starter')
         main = parse_menu(foods[index+2], allergies[index+2], 'main')
-        second = parse_menu(foods[index+3], allergies[index+3], 'second')
         extra = FoodStructure('', '', 'extra')
         dessert = FoodStructure('', '', 'dessert')
-        if foods[index+4][0] == 'Acompañamiento':
-            extra = parse_menu(foods[index+4], allergies[index+4], 'extra')
-            dessert = parse_menu(foods[index+5], allergies[index+5], 'dessert')
-        else:
+        if types[index+3] == 'Acompañamiento':
+            extra = parse_menu(foods[index+3], allergies[index+3], 'extra')
             dessert = parse_menu(foods[index+4], allergies[index+4], 'dessert')
+        elif types[index+3] == 'Postre':
+            dessert = parse_menu(foods[index+3], allergies[index+3], 'dessert')
 
-        menus_fuentenueva.append(MenuModel(starter, main, second, extra, dessert, date))
+        menus_fuentenueva.append(MenuModel(starter, main, extra, dessert, date))
 
 url = 'http://localhost:8000/api/v1/menus'
 
@@ -113,11 +110,12 @@ for menu in menus_fuentenueva:
     payload = {
         'entrante': menu.starter.render_json(),
         'principal': menu.main.render_json(),
-        'segundo': menu.second.render_json(),
-        'extra': menu.extra.render_json(),
+        'acompaniamiento': menu.extra.render_json(),
         'postre': menu.dessert.render_json(),
         'date': menu.date
     }
+
+    print(payload)
 
     headers = {
         'Content-Type': 'application/json'
