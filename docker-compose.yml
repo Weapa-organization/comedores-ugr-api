@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  fast-api:
+    build:
+      context: ./
+      dockerfile: ./docker-compose/develop/Dockerfile
+    command: run-dev
+    volumes:
+      - ./app:/app
+    environment:
+      - PROJECT_NAME=comedores-ugr-api
+      - MONGODB_URL=mongodb://projectWeapo:projectWeapo@192.168.1.30:27017
+    ports:
+      - "8080:80"
