@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field, EmailStr
 from bson import ObjectId
+from typing import Optional
 
 class PyObjectId(ObjectId):
     @classmethod
@@ -51,8 +52,35 @@ class MenuModel(BaseModel):
             }
         }
 
+class UpdateMenuModel(BaseModel):
+    entrante: Optional[dict] = Field(...)
+    principal: Optional[dict] = Field(...)
+    postre: Optional[dict] = Field(...)
+    date: Optional[str] = Field(...)
 
-class EntranteModel(BaseModel):
-    name: str = Field(...)
-    alergenos: list = Field(...)
-
+    class Config:
+        arbitrary_types_allowed = True
+        json_encoders = {ObjectId: str}
+        schema_extra = {
+            "example": {
+                "entrante": {
+                    "name": "Macarrones",
+                    "alergenos": [
+                        "Gluten"
+                    ]
+                },
+                "principal": {
+                    "name": "Pollo",
+                    "alergenos": [
+                        "Lacteos"
+                    ]
+                },
+                "postre": {
+                    "name": "Tarta de queso",
+                    "alergenos": [
+                        "Gluten"
+                    ]
+                },
+                "date": "2022-09-18"
+            }
+        }
