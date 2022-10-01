@@ -103,7 +103,7 @@ for index, food in enumerate(foods):
 
         menus_fuentenueva.append(MenuModel(starter, main, extra, dessert, date))
 
-url = 'http://localhost:8000/api/v1/menus'
+url = 'http://localhost:80/api/v1/menus'
 
 for menu in menus_fuentenueva:
 
@@ -115,7 +115,6 @@ for menu in menus_fuentenueva:
         'date': menu.date
     }
 
-    print(payload)
 
     headers = {
         'Content-Type': 'application/json'
