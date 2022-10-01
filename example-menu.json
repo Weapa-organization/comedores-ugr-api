@@ -1,0 +1,27 @@
+{
+    "entrante": {
+        "name": "Macarrones",
+        "alergenos": [
+            "Gluten",
+            "Huevo",
+            "Leche"
+        ]
+    },
+    "principal": {
+        "name": "Pollo",
+        "alergenos": [
+            "Gluten",
+            "Huevo",
+            "Leche"
+        ]
+    },
+    "postre": {
+        "name": "Tarta de queso",
+        "alergenos": [
+            "Gluten",
+            "Huevo",
+            "Leche"
+        ]
+    },
+    "date": "2019-01-01"
+}
