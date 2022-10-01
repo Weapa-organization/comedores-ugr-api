@@ -66,6 +66,14 @@ lo estructura y se lo envía a la API para que se encargue de almacenar esta inf
 Para poder ejecutarlo, es necesario instalar las dependencias almacenadas en [requirements-scrapping.txt](./requirements-scrapping.txt).
 Tras esto se podrá lanzar con `python scrapping.py`
 
+### Bot realizado para publicar en Telegram los mensajes
+
+Hay un fichero [bot.py](./bot.py) que contiene el código para desplegar un bot de Telegram, el cuál
+recibe el comando `/hoy` y devuelve el menú del día, solicitando está información a toda la aplicación que se ha ido desarrollando
+en el proyecto.
+
+Este necesita los paquetes almacenados en [requirements-bot.txt](./requirements-bot.txt), que es en concreto pyTelegramBotAPI. 
+
 ### Enlaces de interés
 
 - [FastAPI Docs](https://fastapi.tiangolo.com/)
