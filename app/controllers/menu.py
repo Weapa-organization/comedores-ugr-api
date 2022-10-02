@@ -2,7 +2,8 @@ from http.client import HTTPException
 from fastapi import APIRouter
 from app.models import MenuModel
 from typing import List
-from app.database import db
+from app.database import db, menu_helper
+from bson.objectid import ObjectId
 
 
 router = APIRouter(
@@ -19,8 +20,9 @@ async def list_menu():
 # Get Menu by id
 @router.get("/{id}", response_description="Get a single menu", response_model=MenuModel)
 async def show_menu(id: str):
-    if (menu := await db["menus"].find_one({"_id": id})) is not None:
-        return menu
+    menu = await db["menus"].find_one({"_id": ObjectId(id)})
+    if menu:
+        return menu_helper(menu)
 
     raise HTTPException(status_code=404, detail=f"Menu {id} not found")
 
@@ -40,7 +42,7 @@ async def create_menu(menu: MenuModel):
 
 @router.delete("/{id}", response_description="Delete menu")
 async def delete_menu(id: str):
-    delete_result = await db["menus"].delete_one({"_id": id})
+    delete_result = await db["menus"].delete_one({"_id": ObjectId(id)})
     if delete_result.deleted_count == 1:
         return {"message": "Menu deleted successfully!"}
     return {"message": "Menu not found"}
