@@ -55,17 +55,70 @@ def welcome_message(message):
 
     bot.send_message(message.chat.id, msg)
 
+
 @bot.message_handler(commands=['hoy'])
 def send_menu(message):
-    bot.send_message(message.chat.id, get_menu('hoy'))
+    bot.send_message(message.chat.id, get_menu('hoy',datetime.datetime.utcfromtimestamp(message.date)))
 
-def get_menu(day):
+
+@bot.message_handler(commands=['mañana'])
+def send_menu(message):
+    bot.send_message(message.chat.id, get_menu('mañana',datetime.datetime.utcfromtimestamp(message.date)))
+
+
+@bot.message_handler(commands=['lunes'])
+def send_menu(message):
+    bot.send_message(message.chat.id, get_menu('lunes',datetime.datetime.utcfromtimestamp(message.date)))
+
+
+@bot.message_handler(commands=['martes'])
+def send_menu(message):
+    bot.send_message(message.chat.id, get_menu('martes',datetime.datetime.utcfromtimestamp(message.date)))
+
+
+@bot.message_handler(commands=['miercoes'])
+def send_menu(message):
+    bot.send_message(message.chat.id, get_menu('miercoes',datetime.datetime.utcfromtimestamp(message.date)))
+
+
+@bot.message_handler(commands=['jueves'])
+def send_menu(message):
+    bot.send_message(message.chat.id, get_menu('jueves',datetime.datetime.utcfromtimestamp(message.date)))
+
+
+@bot.message_handler(commands=['viernes'])
+def send_menu(message):
+    bot.send_message(message.chat.id, get_menu('viernes',datetime.datetime.utcfromtimestamp(message.date)))
+
+@bot.message_handler(commands=['sabado'])
+def send_menu(message):
+    bot.send_message(message.chat.id, get_menu('viernes',datetime.datetime.utcfromtimestamp(message.date)))
+
+
+def calculate_day(date):
+    num_day = date.weekday()
+    return date - datetime.timedelta(days=num_day)
+
+
+def get_menu(day,menssage_date):
     # Obtain date format as 'YYYY-MM-DD'
     date = ""
     if day == 'hoy':
-        date = datetime.datetime.now().strftime('%Y-%m-%d')
+        date = menssage_date.strftime('%Y-%m-%d')
     elif day == 'mañana':
-        date = (datetime.datetime.now() + datetime.timedelta(days=1)).strftime('%Y-%m-%d')
+        date = (menssage_date + datetime.timedelta(days=1)).strftime('%Y-%m-%d')
+    elif day == 'lunes':
+        date = (calculate_day(menssage_date)).strftime('%Y-%m-%d')
+    elif day == 'martes':
+        date = (calculate_day(menssage_date) + datetime.timedelta(days=1)).strftime('%Y-%m-%d')
+    elif day == 'miecoles':
+        date = (calculate_day(menssage_date) + datetime.timedelta(days=2)).strftime('%Y-%m-%d')
+    elif day == 'jueves':
+        date = (calculate_day(menssage_date) + datetime.timedelta(days=3)).strftime('%Y-%m-%d')
+    elif day == 'viernes':
+        date = (calculate_day(menssage_date) + datetime.timedelta(days=4)).strftime('%Y-%m-%d')
+    elif day == 'sabado':
+        date = (calculate_day(menssage_date) + datetime.timedelta(days=5)).strftime('%Y-%m-%d')
 
     # Obtain menu from API
 
