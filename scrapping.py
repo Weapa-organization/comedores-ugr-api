@@ -55,6 +55,9 @@ def calculate_date(date):
     day = date[1]
     month = date[3]
     year = date[5]
+    
+    if len(day) == 1:
+        day = '0' + day
 
     # Parsear month
     month = month_parse[month]
@@ -103,7 +106,7 @@ for index, food in enumerate(foods):
 
         menus_fuentenueva.append(MenuModel(starter, main, extra, dessert, date))
 
-url = 'http://localhost:80/api/v1/menus'
+url = 'http://localhost:8080/api/v1/menus'
 
 for menu in menus_fuentenueva:
 
@@ -119,6 +122,6 @@ for menu in menus_fuentenueva:
     headers = {
         'Content-Type': 'application/json'
     }
-
+    
     response = requests.request("POST", url, headers=headers, data=json.dumps(payload))
 
