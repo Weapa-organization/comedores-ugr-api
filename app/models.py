@@ -21,6 +21,7 @@ class MenuModel(BaseModel):
     id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
     entrante: dict = Field(...)
     principal: dict = Field(...)
+    acompaniamiento: dict = Field(...)
     postre: dict = Field(...)
     date: str = Field(...)
 
@@ -55,6 +56,7 @@ class MenuModel(BaseModel):
 class UpdateMenuModel(BaseModel):
     entrante: Optional[dict] = Field(...)
     principal: Optional[dict] = Field(...)
+    acompaniamiento: Optional[dict] = Field(...)
     postre: Optional[dict] = Field(...)
     date: Optional[str] = Field(...)
 
