@@ -90,6 +90,7 @@ def send_menu(message):
 def send_menu(message):
     bot.send_message(message.chat.id, get_menu('viernes',datetime.datetime.utcfromtimestamp(message.date)))
 
+
 @bot.message_handler(commands=['sabado'])
 def send_menu(message):
     bot.send_message(message.chat.id, get_menu('viernes',datetime.datetime.utcfromtimestamp(message.date)))
