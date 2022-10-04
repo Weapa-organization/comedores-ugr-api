@@ -139,6 +139,13 @@ cython_debug/
 
 # Text Editor
 .vscode
+<<<<<<< HEAD
+
+# Pycharm
+.idea
+=======
+.idea
+>>>>>>> Update .gitignore. subido .idea y .vscode + venv
 
 # Pycharm
 .idea
