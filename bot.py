@@ -6,9 +6,10 @@ import signal
 import time
 import sys
 import os
+import re
 
 bot = telebot.TeleBot(os.environ.get('BOT_TOKEN'), parse_mode=None)
-url = "http://localhost:8000/api/v1/menus/date/"
+url = "http://fastapi:80/api/v1/menus/date/"
 
 class FoodStructure:
     name: str
@@ -56,16 +57,50 @@ def welcome_message(message):
     bot.send_message(message.chat.id, msg)
 
 @bot.message_handler(commands=['hoy'])
-def send_menu(message):
-    bot.send_message(message.chat.id, get_menu('hoy'))
+def send_menu_today(message):
+    bot.send_message(message.chat.id, get_menu('hoy',datetime.datetime.utcfromtimestamp(message.date)))
 
-def get_menu(day):
+
+@bot.message_handler(commands=['mañana'])
+def send_menu_tomorrow (message):
+    regex = re.compile('\/\w*')
+    command = regex.search(message.text).group(0)
+    day = command.replace("/", "")
+    bot.send_message(message.chat.id, get_menu(day,datetime.datetime.utcfromtimestamp(message.date)))
+
+@bot.message_handler(commands=['lunes', 'martes', 'miercoles', 'jueves',
+                               'viernes', 'sabado'])
+def send_menu_day(message):
+    regex = re.compile('\/\w*')
+    command = regex.search(message.text).group(0)
+    day = command.replace("/", "")
+    bot.send_message(message.chat.id, get_menu(day,datetime.datetime.utcfromtimestamp(message.date)))
+
+
+def calculate_day(date):
+    num_day = date.weekday()
+    return date - datetime.timedelta(days=num_day)
+
+
+def get_menu(day,menssage_date):
     # Obtain date format as 'YYYY-MM-DD'
     date = ""
     if day == 'hoy':
-        date = datetime.datetime.now().strftime('%Y-%m-%d')
+        date = menssage_date.strftime('%Y-%m-%d')
     elif day == 'mañana':
-        date = (datetime.datetime.now() + datetime.timedelta(days=1)).strftime('%Y-%m-%d')
+        date = (menssage_date + datetime.timedelta(days=1)).strftime('%Y-%m-%d')
+    elif day == 'lunes':
+        date = (calculate_day(menssage_date)).strftime('%Y-%m-%d')
+    elif day == 'martes':
+        date = (calculate_day(menssage_date) + datetime.timedelta(days=1)).strftime('%Y-%m-%d')
+    elif day == 'miercoles':
+        date = (calculate_day(menssage_date) + datetime.timedelta(days=2)).strftime('%Y-%m-%d')
+    elif day == 'jueves':
+        date = (calculate_day(menssage_date) + datetime.timedelta(days=3)).strftime('%Y-%m-%d')
+    elif day == 'viernes':
+        date = (calculate_day(menssage_date) + datetime.timedelta(days=4)).strftime('%Y-%m-%d')
+    elif day == 'sabado':
+        date = (calculate_day(menssage_date) + datetime.timedelta(days=5)).strftime('%Y-%m-%d')
 
     # Obtain menu from API
 
@@ -73,14 +108,27 @@ def get_menu(day):
 
     if r.status_code == 200:
         menu = r.json()[0]
-        msg = f"Menu del {menu['date']}"
+        msg = f"Menu 1 del {menu['date']}"
         msg = msg + "\n"
         msg = msg + f"Entrante: {menu['entrante']['nombre']}"
         msg = msg + "\n"
         msg = msg + f"Principal: {menu['principal']['nombre']}"
         msg = msg + "\n"
+        msg = msg + f"Acompañamiento: {menu['acompaniamiento']['nombre']}"
+        msg = msg + "\n"
         msg = msg + f"Postre: {menu['postre']['nombre']}"
-
+        msg = msg + "\n"
+        msg = msg + "\n"
+        msg = msg + f"Menu 2 del {menu['date']}"
+        msg = msg + "\n"
+        menu = r.json()[1]
+        msg = msg + f"Entrante: {menu['entrante']['nombre']}"
+        msg = msg + "\n"
+        msg = msg + f"Principal: {menu['principal']['nombre']}"
+        msg = msg + "\n"
+        msg = msg + f"Acompañamiento: {menu['acompaniamiento']['nombre']}"
+        msg = msg + "\n"
+        msg = msg + f"Postre: {menu['postre']['nombre']}"
         return msg
 
     return r.status_code
